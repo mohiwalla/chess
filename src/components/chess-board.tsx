@@ -1,4 +1,11 @@
+"use client"
+
+import { initialPosition } from "@/lib/initial-position"
+import { useState } from "react"
+
 export default function ChessBoard() {
+	const [highlightedSquares, setHighlightedSquares] = useState<boolean[]>(new Array(64).fill(false))
+
 	/**
 	 * Uppercase letter represents white piece,
 	 * Lowercase letter represents black piece.
@@ -11,51 +18,49 @@ export default function ChessBoard() {
 	 * P/p = pawn
 	 */
 
-	const imagesBasePath = "/images/pieces/default"
-	const initialPosition = ["r", "n", "b", "q", "k", "b", "n", "r", "p", "p", "p", "p", "p", "p", "p", "p", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "P", "P", "P", "P", "P", "P", "P", "P", "R", "N", "B", "Q", "K", "B", "N", "R"]
-	const squareColors = ["b", "w", "b", "w", "b", "w", "b", "w", "w", "b", "w", "b", "w", "b", "w", "b", "b", "w", "b", "w", "b", "w", "b", "w", "w", "b", "w", "b", "w", "b", "w", "b", "b", "w", "b", "w", "b", "w", "b", "w", "w", "b", "w", "b", "w", "b", "w", "b", "b", "w", "b", "w", "b", "w", "b", "w", "w", "b", "w", "b", "w", "b", "w", "b"]
+	const imagesBasePath = "/images/pieces/lolz"
 
 	return (
-		<div className="grid grid-cols-8 grid-rows-8 w-fit mx-auto my-10 select-none">
-			{initialPosition.map((piece, i) => {
+		<div className="grid grid-cols-8 grid-rows-8 w-fit mx-auto my-6 select-none">
+			{initialPosition.map(({piece, color}, i) => {
 				let imagePath
 
 				switch (piece) {
 					case "r":
-						imagePath = "/black/rook.png"
+						imagePath = "/br.png"
 						break
 					case "n":
-						imagePath = "/black/knight.png"
+						imagePath = "/bn.png"
 						break
 					case "b":
-						imagePath = "/black/bishop.png"
+						imagePath = "/bb.png"
 						break
 					case "q":
-						imagePath = "/black/queen.png"
+						imagePath = "/bq.png"
 						break
 					case "k":
-						imagePath = "/black/king.png"
+						imagePath = "/bk.png"
 						break
 					case "p":
-						imagePath = "/black/pawn.png"
+						imagePath = "/bp.png"
 						break
 					case "R":
-						imagePath = "/white/rook.png"
+						imagePath = "/wr.png"
 						break
 					case "N":
-						imagePath = "/white/knight.png"
+						imagePath = "/wn.png"
 						break
 					case "B":
-						imagePath = "/white/bishop.png"
+						imagePath = "/wb.png"
 						break
 					case "Q":
-						imagePath = "/white/queen.png"
+						imagePath = "/wq.png"
 						break
 					case "K":
-						imagePath = "/white/king.png"
+						imagePath = "/wk.png"
 						break
 					case "P":
-						imagePath = "/white/pawn.png"
+						imagePath = "/wp.png"
 						break
 					default:
 						imagePath = null
@@ -64,9 +69,17 @@ export default function ChessBoard() {
 				return (
 					<div
 						key={`piece-${i}`}
-						className="size-14 grid place-content-center"
+						className="grid place-content-center relative"
 						style={{
-							backgroundColor: squareColors[i] == "b" ? "#6f914a" : "#ebecd0",
+							backgroundColor: color == "b" ? "#6f914a" : "#ebecd0",
+						}}
+						onContextMenu={(e) => {
+							e.preventDefault()
+
+							const newHighlightedSquares = [...highlightedSquares]
+							newHighlightedSquares[i] = !newHighlightedSquares[i]
+
+							setHighlightedSquares(newHighlightedSquares)
 						}}
 					>
 						{imagePath ? (
@@ -74,11 +87,14 @@ export default function ChessBoard() {
 								draggable={false}
 								src={imagesBasePath + imagePath}
 								alt=""
-								className="size-11 cursor-grab active:cursor-grabbing"
+								className="size-16 cursor-grab active:cursor-grabbing relative z-10"
 							/>
 						) : (
-							<span>&nbsp;</span>
+							<span></span>
 						)}
+
+						<span className={`absolute transition-colors duration-75 w-full h-full
+							${highlightedSquares[i] ? "bg-[#f55640d0]" : ""}`}></span>
 					</div>
 				)
 			})}

@@ -1,22 +1,12 @@
 "use client"
 
-import { useDraggable } from "@dnd-kit/core"
-import { CSS } from "@dnd-kit/utilities"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 
-export default function Draggable() {
-	const { attributes, listeners, setNodeRef, transform } = useDraggable({
-		id: "unique-id",
-	})
-	const style = {
-		transform: CSS.Translate.toString(transform),
-	}
-
+export default function MyApp() {
 	return (
-		<button
-			ref={setNodeRef}
-			style={style}
-			{...listeners}
-			{...attributes}
-		>test</button>
+		<DndProvider backend={HTML5Backend}>
+			<p>test</p>
+		</DndProvider>
 	)
 }
