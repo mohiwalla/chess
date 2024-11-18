@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function Home() {
     return (
@@ -8,7 +9,7 @@ export default function Home() {
             </h1>
 
             <div className="flex flex-col gap-2 max-w-sm mx-auto">
-                <Button variant="outline" asChild><a href="/play/bots">Play bots 🤖</a></Button>
+                <Button variant="outline" asChild><Link href="/play/bots">Play bots 🤖</Link></Button>
                 <Button variant="outline">Pass & Play ♟️</Button>
                 <Button variant="outline" disabled>Play friends 🧑 (Coming soon..)</Button>
             </div>
