@@ -3,14 +3,12 @@ import { useEffect, useState } from "react"
 
 type DraggablePieceProps = {
 	src: string
-	flipped: boolean
 	squareName: string
 	handleMoves: (fromSquare: string, toSquare: string) => void
 }
 
 export default function DraggablePiece({
 	src,
-	flipped,
 	squareName,
 	handleMoves,
 }: DraggablePieceProps) {
@@ -63,7 +61,6 @@ export default function DraggablePiece({
 			className="sm:max-w-16 aspect-square relative z-10"
 			style={{
 				cursor,
-				transform: flipped ? "rotate(180deg)" : "",
 			}}
 		/>
 	)

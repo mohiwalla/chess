@@ -27,6 +27,7 @@ export function DroppableSquare({
 		<div
 			className="grid place-content-center relative"
 			id={"square-" + squareName}
+			onClick={() => console.log(squareName)}
 			style={{
 				backgroundColor: (x + y) % 2 ? "#6f914a" : "#ebecd0",
 				// outline: isOver ? "3px solid #a9a9a9" : "",
@@ -42,7 +43,7 @@ export function DroppableSquare({
 			}}
 		>
 			{imagePath && (
-				<DraggablePiece squareName={squareName} src={imagePath} handleMoves={handleMoves} flipped={flipped} />
+				<DraggablePiece squareName={squareName} src={imagePath} handleMoves={handleMoves} />
 			)}
 
 			<span

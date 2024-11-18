@@ -9,7 +9,8 @@ type ChessBoardProps = {
 	setHighlightedSquares: (highlightedSquares: (string | boolean)[]) => void
 }
 
-const imagesBasePath = "/images/pieces/lolz"
+const imagesBasePath = "/images/pieces/default"
+// const imagesBasePath = "/images/pieces/lolz"
 
 export default function ChessBoard({
 	FEN,
@@ -18,12 +19,18 @@ export default function ChessBoard({
 	highlightedSquares,
 	setHighlightedSquares,
 }: ChessBoardProps) {
-	const ranks = FEN.split(" ")[0].split("/")
+	let ranks
+
+	if (flipped) {
+		ranks = FEN.split(" ")[0].split("/").reverse()
+	} else {
+		ranks = FEN.split(" ")[0].split("/")
+	}
+
+	console.log(ranks)
 
 	return (
-		<div className="grid grid-cols-8 grid-rows-8 w-fit mx-auto my-6 select-none" style={{
-			transform: flipped ? "rotate(180deg)" : "",
-		}}>
+		<div className="grid grid-cols-8 grid-rows-8 w-fit mx-auto my-6 select-none">
 			{ranks.map((rank, y) => {
 				const pieces = rank.split("")
 				let x = -1

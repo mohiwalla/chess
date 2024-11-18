@@ -127,7 +127,7 @@ function BotProfile({
 				</TooltipTrigger>
 
 				<TooltipContent>
-					<p>Rating {elo}</p>
+					<p>Elo {elo}</p>
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>

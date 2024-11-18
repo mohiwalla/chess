@@ -13,7 +13,7 @@ label {
 }
 
 img:not(.no-filter) {
-	@apply saturate-[1.15] contrast-[1.15];
+	@apply saturate-[1.2] contrast-[1.2];
 }
 
 @layer base {

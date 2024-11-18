@@ -12,12 +12,13 @@ import { bots } from "@/lib/bots"
 import { upperCaseWords } from "@/lib/utils"
 import { redirect } from "next/navigation"
 import { useState } from "react"
-import { makeMove } from "@/lib/make-move"
+import { makeMove } from "@/logic/make-move"
 import { startPosFEN } from "@/lib/config"
-import isLegalMove from "@/lib/legal-moves"
+import isLegalMove from "@/logic/legal-moves"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import ChessBoard from "@/components/chess-board"
+import { bot } from "@/types/bot"
 
 export default function PlayBot({
 	params,
@@ -31,9 +32,9 @@ export default function PlayBot({
 	const [highlightedSquares, setHighlightedSquares] = useState<
 		(string | boolean)[]
 	>(new Array(64).fill(false))
-	const bot = bots.find((bot) => bot.name === params.bot)
+	const bot = bots.find((bot) => bot.name === params.bot) as bot
 
-	if (!bot) {
+	if (bot === undefined) {
 		redirect("/play/bots")
 	}
 
@@ -42,7 +43,7 @@ export default function PlayBot({
 		timeControl: 0,
 	})
 
-	function startGame() {
+	async function startGame() {
 		if (gameConfig.playAs === "random") {
 			setGameConfig((prev) => ({
 				...prev,
@@ -51,6 +52,19 @@ export default function PlayBot({
 		}
 
 		setShowBoard(true)
+
+		if (gameConfig.playAs === "black") {
+			const bestMove = await getBestMove(FEN, bot.elo)
+			if (!bestMove) return
+
+			makeMove({
+				FEN,
+				setFEN,
+				setHighlightedSquares,
+				fromSquare: bestMove.substring(0, 2),
+				toSquare: bestMove.substring(2, 4),
+			})
+		}
 	}
 
 	async function handleMoves(fromSquare: string, toSquare: string) {
@@ -58,35 +72,22 @@ export default function PlayBot({
 		if (!isLegalMove(FEN, fromSquare, toSquare)) return
 
 		let newFEN = makeMove({
-			fromSquare,
-			toSquare,
 			FEN,
 			setFEN,
+			fromSquare,
+			toSquare,
 			setHighlightedSquares,
 		})
 
-		const req = await fetch("/api/best-move", {
-			method: "post",
-			body: JSON.stringify({
-				FEN: newFEN,
-				elo: bot?.elo,
-				depth: 12
-			}),
-		})
-
-		if (!req.ok) {
-			return alert("Something went wrong on server, please try again later.")
-		}
-
-		const res = await req.json()
-		const computerMove = res.bestMove as string
+		const bestMove = await getBestMove(newFEN, bot.elo)
+		if (!bestMove) return
 
 		newFEN = makeMove({
-			fromSquare: computerMove.substring(0, 2),
-			toSquare: computerMove.substring(2, 4),
 			FEN: newFEN,
 			setFEN,
 			setHighlightedSquares,
+			fromSquare: bestMove.substring(0, 2),
+			toSquare: bestMove.substring(2, 4),
 		})
 	}
 
@@ -109,7 +110,6 @@ export default function PlayBot({
 					src={`/images/bots/${bot.imagePath}.png`}
 					alt=""
 					className="w-20"
-					// drop-shadow-[3px_0_2px_#ffffff60]
 				/>
 			</div>
 
@@ -165,4 +165,23 @@ export default function PlayBot({
 			</Button>
 		</div>
 	)
+}
+
+async function getBestMove(FEN: string, elo: number) {
+	const req = await fetch("/api/best-move", {
+		method: "post",
+		body: JSON.stringify({
+			FEN,
+			elo,
+			depth: 12,
+		}),
+	})
+
+	if (!req.ok) {
+		return alert("Something went wrong on server, please try again later.")
+	}
+
+	const res = await req.json()
+
+	return res.bestMove
 }

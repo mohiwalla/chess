@@ -2,7 +2,7 @@ import {
 	convertFENToBoard,
 	coordinateToSquareName,
 	squareNameToCoordinates,
-} from "./utils"
+} from "@/lib/utils"
 
 export default function isLegalMove(
 	FEN: string,

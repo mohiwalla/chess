@@ -4,7 +4,7 @@ import {
 	getEnPassentSquare,
 	pieceOnSquare,
 	squareNameToCoordinates,
-} from "./utils"
+} from "@/lib/utils"
 
 type MakeMoveProps = {
 	fromSquare: string
