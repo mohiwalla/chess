@@ -79,7 +79,7 @@ async function dragon({
 	elo: number
 }) {
 	const engine = spawn(dragonPath)
-	const skillLevel = Math.ceil(elo / 250 - 1)
+	const skillLevel = Math.floor(elo / 100) + 2
 
 	let returnResponse = ""
 	engine.stdin?.write(`setoption name Skill value ${skillLevel}\n`)
@@ -102,7 +102,7 @@ async function dragon({
 					engine.kill()
 
 					resolve(bestMove)
-				}, 10)
+				}, 100)
 			}
 		})
 	})

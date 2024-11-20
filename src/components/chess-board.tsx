@@ -19,21 +19,22 @@ export default function ChessBoard({
 	highlightedSquares,
 	setHighlightedSquares,
 }: ChessBoardProps) {
-	let ranks
+	let ranks = FEN.split(" ")[0].split("/")
 
 	if (flipped) {
-		ranks = FEN.split(" ")[0].split("/").reverse()
-	} else {
-		ranks = FEN.split(" ")[0].split("/")
+		ranks = FEN.split(" ")[0].split("").reverse().join("").split("/")
 	}
-
-	console.log(ranks)
 
 	return (
 		<div className="grid grid-cols-8 grid-rows-8 w-fit mx-auto my-6 select-none">
 			{ranks.map((rank, y) => {
 				const pieces = rank.split("")
 				let x = -1
+
+				if (flipped) {
+					x = 8
+					y = 7 - y
+				}
 
 				return pieces.map((piece) => {
 					let imagePath
@@ -76,7 +77,7 @@ export default function ChessBoard({
 							break
 						default:
 							return new Array(+piece).fill(null).map(() => {
-								++x
+								flipped ? --x : ++x
 
 								return (
 									<DroppableSquare
@@ -93,7 +94,8 @@ export default function ChessBoard({
 							})
 					}
 
-					++x
+					flipped ? --x : ++x
+
 					return (
 						<DroppableSquare
 							x={x}

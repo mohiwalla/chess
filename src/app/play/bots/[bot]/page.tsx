@@ -107,9 +107,9 @@ export default function PlayBot({
 				</h3>
 
 				<img
-					src={`/images/bots/${bot.imagePath}.png`}
+					src={`/images/bots/${bot.imagePath}`}
 					alt=""
-					className="w-20"
+					className="w-24"
 				/>
 			</div>
 

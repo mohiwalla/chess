@@ -2,17 +2,18 @@
 
 1. show last move ✅
 2. level adjustment ✅
-3. promotion
-4. castling ✅
-5. en passant ✅
-6. premove
-7. check
-8. checkmate
-9. stalemate
-10. theme picker
-11. moves history
-12. legal moves ..
-13. click & move
-14. draw arrows
-15. multiplayer
-16. cheat for dev
+3. play as black ✅
+4. promotion
+5. castling ✅
+6. en passant ✅
+7. premove
+8. check
+9. checkmate
+10. stalemate
+11. theme picker
+12. moves history
+13. legal moves ..
+14. click & move
+15. draw arrows
+16. multiplayer
+17. cheat for dev
