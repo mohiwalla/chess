@@ -51,9 +51,6 @@ export default function DraggablePiece({
 			whileDrag={{
 				scale: 1.2,
 				zIndex: 100,
-				transition: {
-					duration: "100ms"
-				}
 			}}
 			dragTransition={{
 				bounceStiffness: 600,
