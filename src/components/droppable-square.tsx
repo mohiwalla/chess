@@ -4,7 +4,6 @@ import DraggablePiece from "./draggable-piece"
 type SquareProps = {
 	x: number
 	y: number
-	flipped: boolean
 	imagePath: string | null
 	highlightedSquares: (string | boolean)[]
 	setHighlightedSquares: (highlightedSquares: (string | boolean)[]) => void
@@ -14,7 +13,6 @@ type SquareProps = {
 export function DroppableSquare({
 	x,
 	y,
-	flipped,
 	imagePath,
 	handleMoves,
 	highlightedSquares,

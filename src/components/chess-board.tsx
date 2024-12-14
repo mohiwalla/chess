@@ -1,5 +1,4 @@
 import { DroppableSquare } from "./droppable-square"
-import { AnimatePresence } from "framer-motion"
 
 type ChessBoardProps = {
 	FEN: string
@@ -77,14 +76,17 @@ export default function ChessBoard({
 							break
 						default:
 							return new Array(+piece).fill(null).map(() => {
-								flipped ? --x : ++x
+								if (flipped) {
+									--x
+								} else {
+									++x
+								}
 
 								return (
 									<DroppableSquare
 										key={`square-${x * 8 + y}`}
 										x={x}
 										y={y}
-										flipped={flipped}
 										handleMoves={handleMoves}
 										imagePath={null}
 										highlightedSquares={highlightedSquares}
@@ -94,13 +96,16 @@ export default function ChessBoard({
 							})
 					}
 
-					flipped ? --x : ++x
+					if (flipped) {
+						--x
+					} else {
+						++x
+					}
 
 					return (
 						<DroppableSquare
 							x={x}
 							y={y}
-							flipped={flipped}
 							handleMoves={handleMoves}
 							key={`square-${x * 8 + y}`}
 							imagePath={`${imagesBasePath}/${imagePath}`}

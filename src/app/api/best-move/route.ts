@@ -10,8 +10,9 @@ const chessEnginesBasePath = path.join(
 	"..",
 	"chess-engines"
 )
-const stockfishPath = path.join(chessEnginesBasePath, "stockfish.exe")
-const dragonPath = path.join(chessEnginesBasePath, "dragon.exe")
+
+const stockfishPath = path.join(chessEnginesBasePath, "stockfish")
+const dragonPath = path.join(chessEnginesBasePath, "dragon")
 
 export async function POST(req: Request) {
 	const data = await req.json()

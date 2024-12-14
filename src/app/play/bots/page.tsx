@@ -13,20 +13,6 @@ export default function PlayBots() {
 		<main className="py-6 space-y-6">
 			<div className="flex flex-col items-center gap-10">
 				<section className="flex flex-col gap-4">
-					<h4 className="font-bold text-lg text-center">Dumb</h4>
-
-					<div className="flex gap-8">
-						{bots
-							.filter((bot) => bot.level === "dumb")
-							.map((bot) => {
-								return (
-									<BotProfile key={bot.name} name={bot.name} elo={bot.elo} imagePath={bot.imagePath} />
-								)
-							})}
-					</div>
-				</section>
-
-				<section className="flex flex-col gap-4">
 					<h4 className="font-bold text-lg text-center">Beginner</h4>
 
 					<div className="flex gap-8">

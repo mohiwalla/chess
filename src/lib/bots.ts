@@ -2,12 +2,6 @@ import { bot } from "@/types/bot"
 
 export const bots: bot[] = [
 	{
-		name: "dumb",
-		elo: 100,
-		imagePath: "dumb.png",
-		level: "dumb",
-	},
-	{
 		name: "martin",
 		elo: 250,
 		imagePath: "martin.png",

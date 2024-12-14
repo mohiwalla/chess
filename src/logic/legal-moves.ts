@@ -9,14 +9,7 @@ export default function isLegalMove(
 	fromSquare: string,
 	toSquare: string
 ): boolean {
-	const [
-		position,
-		turn,
-		castlingRights,
-		enPassentSquare,
-		halfMoveClock,
-		fullMoveNumber,
-	] = FEN.split(" ")
+	const [position, turn, , enPassentSquare, , ,] = FEN.split(" ")
 	const board = convertFENToBoard(position)
 	const [startX, startY] = squareNameToCoordinates(fromSquare)
 	const [endX, endY] = squareNameToCoordinates(toSquare)
@@ -50,6 +43,38 @@ export default function isLegalMove(
 				enPassentSquare,
 			})
 			break
+		case "r":
+			isLegalMove = isLegalRookMove({
+				fromSquare,
+				toSquare,
+				board,
+			})
+			break
+		case "b":
+			isLegalMove = isLegalBishopMove({
+				fromSquare,
+				toSquare,
+				board,
+			})
+			break
+		case "n":
+			isLegalMove = isLegalKnightMove({
+				fromSquare,
+				toSquare,
+			})
+			break
+		case "q":
+			isLegalMove =
+				isLegalRookMove({
+					fromSquare,
+					toSquare,
+					board,
+				}) ||
+				isLegalBishopMove({
+					fromSquare,
+					toSquare,
+					board,
+				})
 		default:
 			isLegalMove = true
 			break
@@ -128,4 +153,90 @@ function pawnCapturePossibleOnSquares({
 	}
 
 	return captureSqaures
+}
+
+function isLegalRookMove({
+	fromSquare,
+	toSquare,
+	board,
+}: {
+	fromSquare: string
+	toSquare: string
+	board: string[][]
+}): boolean {
+	const [startX, startY] = squareNameToCoordinates(fromSquare)
+	const [endX, endY] = squareNameToCoordinates(toSquare)
+
+	// Ensure move is either horizontal or vertical
+	if (startX !== endX && startY !== endY) {
+		return false
+	}
+
+	// Determine direction of movement and validate the path
+	const deltaX = Math.sign(endX - startX) // Horizontal step (+1, 0, -1)
+	const deltaY = Math.sign(endY - startY) // Vertical step (+1, 0, -1)
+	let x = startX + deltaX
+	let y = startY + deltaY
+
+	while (x !== endX || y !== endY) {
+		if (board[y][x] !== "") {
+			return false // Path blocked
+		}
+		x += deltaX
+		y += deltaY
+	}
+
+	return true
+}
+
+function isLegalBishopMove({
+	fromSquare,
+	toSquare,
+	board,
+}: {
+	fromSquare: string
+	toSquare: string
+	board: string[][]
+}): boolean {
+	const [startX, startY] = squareNameToCoordinates(fromSquare)
+	const [endX, endY] = squareNameToCoordinates(toSquare)
+
+	// Bishop moves diagonally, so the absolute difference between x and y must match
+	if (Math.abs(startX - endX) !== Math.abs(startY - endY)) {
+		return false
+	}
+
+	// Determine the direction of movement
+	const deltaX = Math.sign(endX - startX) // +1 for right, -1 for left
+	const deltaY = Math.sign(endY - startY) // +1 for down, -1 for up
+
+	let x = startX + deltaX
+	let y = startY + deltaY
+
+	// Check all squares along the diagonal path
+	while (x !== endX && y !== endY) {
+		if (board[y][x] !== "") {
+			return false // Path is blocked
+		}
+		x += deltaX
+		y += deltaY
+	}
+
+	return true
+}
+
+function isLegalKnightMove({
+	fromSquare,
+	toSquare,
+}: {
+	fromSquare: string
+	toSquare: string
+}): boolean {
+	const [startX, startY] = squareNameToCoordinates(fromSquare)
+	const [endX, endY] = squareNameToCoordinates(toSquare)
+
+	const dx = Math.abs(startX - endX)
+	const dy = Math.abs(startY - endY)
+
+	return (dx === 2 && dy === 1) || (dx === 1 && dy === 2)
 }
